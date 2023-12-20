@@ -1,0 +1,65 @@
+// Constructor function for BankAccount
+function BankAccount(accountNumber, name, type, balance) {
+    this.accountNumber = accountNumber;
+    this.name = name;
+    this.type = type;
+    this.balance = balance;
+    this.active = true; // Account is active by default
+}
+
+// Methods added to the BankAccount prototype
+BankAccount.prototype.deposit = function(amount) {
+    if (amount > 0) {
+        this.balance += amount;
+        console.log(`Deposited ${amount} into account ${this.accountNumber}.`);
+    } else {
+        console.log('Invalid deposit amount.');
+    }
+};
+
+BankAccount.prototype.withdraw = function(amount) {
+    if (this.active && amount > 0 && amount <= this.balance) {
+        this.balance -= amount;
+        console.log(`Withdrawn ${amount} from account ${this.accountNumber}.`);
+    } else {
+        console.log('Invalid withdrawal amount or insufficient funds.');
+    }
+};
+
+BankAccount.prototype.checkBalance = function() {
+    console.log(`Account ${this.accountNumber} balance: ${this.balance}`);
+};
+
+BankAccount.prototype.isActive = function() {
+    return this.active;
+};
+
+// Function to calculate the total balance of all active accounts
+function getTotalBalance(accounts) {
+    return accounts.reduce((total, account) => {
+        return account.isActive() ? total + account.balance : total;
+    }, 0);
+}
+
+// Create multiple BankAccount objects
+const account1 = new BankAccount(1, 'John Doe', 'Savings', 1000);
+const account2 = new BankAccount(2, 'Jane Smith', 'Checking', 2000);
+const account3 = new BankAccount(3, 'Bob Johnson', 'Savings', 1500);
+
+// Perform operations on accounts
+account1.deposit(500);
+account2.withdraw(100);
+account3.deposit(200);
+
+account1.checkBalance();
+account2.checkBalance();
+account3.checkBalance();
+
+console.log('Account 1 is active:', account1.isActive());
+console.log('Account 2 is active:', account2.isActive());
+console.log('Account 3 is active:', account3.isActive());
+
+// Test getTotalBalance function
+const accounts = [account1, account2, account3];
+const totalBalance = getTotalBalance(accounts);
+console.log('Total balance of all active accounts:', totalBalance);
